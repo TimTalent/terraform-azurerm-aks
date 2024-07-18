@@ -20,6 +20,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   resource_group_name                 = data.azurerm_resource_group.main.name
   automatic_channel_upgrade           = var.automatic_channel_upgrade
   azure_policy_enabled                = var.azure_policy_enabled
+  cost_analysis_enabled               = var.cost_analysis_enabled
   disk_encryption_set_id              = var.disk_encryption_set_id
   dns_prefix                          = var.prefix
   image_cleaner_enabled               = var.image_cleaner_enabled
@@ -622,6 +623,10 @@ resource "azurerm_kubernetes_cluster" "main" {
     precondition {
       condition     = var.brown_field_application_gateway_for_ingress == null || var.green_field_application_gateway_for_ingress == null
       error_message = "Either one of `var.brown_field_application_gateway_for_ingress` or `var.green_field_application_gateway_for_ingress` must be `null`."
+    }
+    precondition {
+      condition     = !(var.cost_analysis_enabled && !contains(["Standard", "Premium"], var.sku_tier))
+      error_message = "The `var.sku_tier` must be set to `Standard` or `Premium` to enable cost analysis feature."
     }
   }
 }

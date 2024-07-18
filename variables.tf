@@ -428,6 +428,13 @@ variable "confidential_computing" {
   description = "(Optional) Enable Confidential Computing."
 }
 
+variable "cost_analysis_enabled" {
+  type        = bool
+  default     = false
+  description = "(Optional) Enable cost analysis"
+  nullable    = false
+}
+
 variable "create_role_assignment_network_contributor" {
   type        = bool
   default     = false
